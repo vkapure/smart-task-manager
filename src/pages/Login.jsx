@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "@/context/AuthContext";
 import {
   Card,
   CardAction,
@@ -26,6 +27,7 @@ const loginSchema = z.object({
   password: z.string().min(8),
 });
 const Login = () => {
+  const { login } = useContext(AuthContext);
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
   const {
@@ -42,6 +44,7 @@ const Login = () => {
       data.email === MOCK_USER.email &&
       data.password === MOCK_USER.password
     ) {
+      login();
       setLoginError("");
       navigate("/dashboard", { replace: true });
     } else {
